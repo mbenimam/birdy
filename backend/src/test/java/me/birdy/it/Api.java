@@ -1,6 +1,7 @@
 package me.birdy.it;
 
 import jakarta.json.Json;
+import jakarta.json.JsonException;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonValue;
@@ -132,6 +133,9 @@ public final class Api {
         }
         try (JsonReader reader = Json.createReader(new StringReader(body))) {
             return reader.readValue();
+        } catch (JsonException e) {
+            // Not JSON (for example an HTML error page of the server): keep the text so that tests can report it.
+            return Json.createValue(body);
         }
     }
 }

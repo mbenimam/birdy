@@ -3,7 +3,6 @@ package me.birdy.users;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +21,6 @@ public class FollowService {
     @Inject
     private UserService userService;
 
-    @Inject
-    private Clock clock;
-
     /** Makes {@code followerId} follow {@code username}; doing it twice changes nothing. */
     @Transactional
     public void follow(long followerId, String username) {
@@ -32,9 +28,7 @@ public class FollowService {
         if (target.id() == followerId) {
             throw ApiException.invalid("username", "you cannot follow yourself");
         }
-        if (follows.count(followerId, target.id()) == 0) {
-            follows.insert(new Follow(followerId, target.id(), clock.instant()));
-        }
+        follows.insertIfAbsent(followerId, target.id());
     }
 
     /** Removes the link if it exists; an unknown username or a missing link is not an error. */

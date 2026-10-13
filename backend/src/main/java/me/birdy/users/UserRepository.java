@@ -1,37 +1,65 @@
 package me.birdy.users;
 
-import jakarta.data.Limit;
-import jakarta.data.repository.By;
-import jakarta.data.repository.Find;
-import jakarta.data.repository.Insert;
-import jakarta.data.repository.Query;
-import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface UserRepository {
+/** Persistence of users. Callers provide the transaction. */
+@ApplicationScoped
+public class UserRepository {
 
-    @Insert
-    void insert(User user);
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Find
-    Optional<User> findById(@By("id") long id);
+    /** Inserts the user immediately, so that its generated id is available on return. */
+    public void insert(User user) {
+        entityManager.persist(user);
+        entityManager.flush();
+    }
 
-    @Find
-    Optional<User> findByUsername(@By("username") String username);
+    public Optional<User> findById(long id) {
+        return Optional.ofNullable(entityManager.find(User.class, id));
+    }
 
-    @Query("select count(this) from User where username = :username or email = :email")
-    long countByUsernameOrEmail(String username, String email);
+    public Optional<User> findByUsername(String username) {
+        return entityManager.createQuery("select u from User u where u.username = :username", User.class)
+                .setParameter("username", username)
+                .getResultStream()
+                .findFirst();
+    }
+
+    public long countByUsernameOrEmail(String username, String email) {
+        return entityManager.createQuery(
+                        "select count(u) from User u where u.username = :username or u.email = :email", Long.class)
+                .setParameter("username", username)
+                .setParameter("email", email)
+                .getSingleResult();
+    }
 
     /** Users other than {@code self} whose username matches the LIKE pattern, see {@link LikePattern}. */
-    @Query("from User where id <> :self and lower(username) like :pattern escape '!' order by username")
-    List<User> search(long self, String pattern, Limit limit);
+    public List<User> search(long self, String pattern, int limit) {
+        return entityManager.createQuery(
+                        "select u from User u where u.id <> :self and lower(u.username) like :pattern escape '!'"
+                                + " order by u.username", User.class)
+                .setParameter("self", self)
+                .setParameter("pattern", pattern)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 
-    @Query("update User set passwordHash = :passwordHash where id = :id")
-    void updatePasswordHash(long id, String passwordHash);
+    public void updatePasswordHash(long id, String passwordHash) {
+        entityManager.createQuery("update User u set u.passwordHash = :passwordHash where u.id = :id")
+                .setParameter("passwordHash", passwordHash)
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 
     /** Sessions and follow links go with the row through the foreign keys' ON DELETE CASCADE. */
-    @Query("delete from User where id = :id")
-    void deleteById(long id);
+    public void deleteById(long id) {
+        entityManager.createQuery("delete from User u where u.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 }

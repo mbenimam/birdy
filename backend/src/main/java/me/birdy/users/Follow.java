@@ -5,9 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import java.time.Instant;
 
-/** The fact that one user (the follower) follows another (the followed). */
+/**
+ * The fact that one user (the follower) follows another (the followed). Rows are written by
+ * {@link FollowRepository#insertIfAbsent}; the entity exists for queries.
+ */
 @Entity
 @Table(name = "follows")
 @IdClass(FollowId.class)
@@ -21,15 +23,6 @@ public class Follow {
     @Column(name = "followed_id")
     private long followedId;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
-
     protected Follow() {
-    }
-
-    public Follow(long followerId, long followedId, Instant createdAt) {
-        this.followerId = followerId;
-        this.followedId = followedId;
-        this.createdAt = createdAt;
     }
 }

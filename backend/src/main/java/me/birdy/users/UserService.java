@@ -1,6 +1,5 @@
 package me.birdy.users;
 
-import jakarta.data.Limit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -44,10 +43,10 @@ public class UserService {
         if (users.countByUsernameOrEmail(request.username(), request.email()) > 0) {
             throw ApiException.conflict("The username or email is already taken");
         }
-        users.insert(new User(request.username(), request.email(), hasher.hash(request.password()),
-                request.birthday(), clock.instant().truncatedTo(ChronoUnit.MILLIS)));
-        // The database assigns the id when the insert is flushed, which this query triggers.
-        return UserView.own(require(request.username()), 0, 0);
+        User user = new User(request.username(), request.email(), hasher.hash(request.password()),
+                request.birthday(), clock.instant().truncatedTo(ChronoUnit.MILLIS));
+        users.insert(user);
+        return UserView.own(user, 0, 0);
     }
 
     /** The profile of {@code user} as its owner sees it, private properties included. */
@@ -74,7 +73,7 @@ public class UserService {
         if (query != null && query.strip().length() > MAX_QUERY_LENGTH) {
             throw ApiException.invalid("q", "must be at most " + MAX_QUERY_LENGTH + " characters");
         }
-        return summaries(users.search(viewerId, LikePattern.containing(query), Limit.of(limit)), viewerId);
+        return summaries(users.search(viewerId, LikePattern.containing(query), limit), viewerId);
     }
 
     /** Removes the account with everything it owns: MongoDB content first, then the row and its dependants. */

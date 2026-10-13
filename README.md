@@ -4,7 +4,7 @@
 ![Java 25](https://img.shields.io/badge/Java-25-437291)
 ![Jakarta EE 11](https://img.shields.io/badge/Jakarta%20EE-11-f89820)
 ![React 19](https://img.shields.io/badge/React-19-58c4dc)
-![tests](https://img.shields.io/badge/tests-274%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-277%20passing-2ea44f)
 [![license MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A small social network, full stack, that starts with one command. You sign up, follow people, post, like, comment
@@ -15,7 +15,7 @@ and talk in a live chat room.
 | **What it is** | A React single-page app, a Jakarta EE REST and WebSocket API, MySQL and MongoDB |
 | **Who it is for** | Anyone who wants to read a complete web application small enough to hold in one head |
 | **Stack** | React 19, TypeScript, Vite · Java 25, Jakarta EE 11 on Payara 7 · MySQL 8.4, MongoDB 8 · nginx · Docker Compose |
-| **Proof** | 274 automated tests: 142 unit and 45 integration tests on the back end, 87 on the front end. The integration tests run against real MySQL, MongoDB and the real server image |
+| **Proof** | 277 automated tests: 142 unit and 48 integration tests on the back end, 87 on the front end. The integration tests run against real MySQL, MongoDB and the real server image |
 
 ![The timeline, with likes and a comment thread open](docs/assets/screenshots/timeline.png)
 
@@ -136,7 +136,7 @@ DELETE /api/users/me         account removed, token now 401
 ## What each half is made of
 
 **Back end** (`backend/`, 5,000 lines of Java). Jakarta REST resources instead of servlets, CDI for all wiring,
-Bean Validation on request records, JSON-B, Jakarta Persistence with Jakarta Data repositories for MySQL, the
+Bean Validation on request records, JSON-B, Jakarta Persistence for MySQL, the
 official MongoDB driver for documents, and a Jakarta WebSocket endpoint for chat. The data source is declared in
 code and reads its URL and credentials from environment variables. Packaged as a WAR on Payara Server 7 Web
 Profile.
@@ -154,7 +154,7 @@ setting and a toggle switches between dark and light.
 ## Checks
 
 ```bash
-cd backend && ./mvnw verify     # 142 unit tests, then 45 integration tests in containers
+cd backend && ./mvnw verify     # 142 unit tests, then 48 integration tests in containers
 cd frontend && npm ci && npm run lint && npm run typecheck && npm test && npm run build
 scripts/smoke.sh                # against a running stack, through nginx
 ```
@@ -166,6 +166,10 @@ wrapper downloads Maven.
 I checked that the tests can fail. I put 20 bugs back into the back end one at a time (no ownership check on
 delete, expiry ignored, a ticket that works twice, a feed that leaks strangers' posts) and 63 into the front end.
 All but one on each side broke a test straight away, and the two survivors now have a test of their own.
+
+Three of the integration tests hammer the API from 10 to 16 threads at once, up to 40,000 requests in a run, and
+require every answer to succeed and to belong to the right user. They exist because a load run once returned a
+single 500 in 2,000 requests.
 
 CI runs three jobs on every push: the back-end build, the front-end build, and the whole stack started with
 Compose followed by the smoke test.

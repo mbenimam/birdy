@@ -1,25 +1,36 @@
 package me.birdy.auth;
 
-import jakarta.data.repository.By;
-import jakarta.data.repository.Find;
-import jakarta.data.repository.Insert;
-import jakarta.data.repository.Query;
-import jakarta.data.repository.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.Instant;
 import java.util.Optional;
 
-@Repository
-public interface SessionRepository {
+/** Persistence of login sessions. Callers provide the transaction. */
+@ApplicationScoped
+public class SessionRepository {
 
-    @Insert
-    void insert(UserSession session);
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Find
-    Optional<UserSession> findByDigest(@By("tokenDigest") String tokenDigest);
+    public void insert(UserSession session) {
+        entityManager.persist(session);
+    }
 
-    @Query("delete from UserSession where tokenDigest = :tokenDigest")
-    void deleteByDigest(String tokenDigest);
+    public Optional<UserSession> findByDigest(String tokenDigest) {
+        return Optional.ofNullable(entityManager.find(UserSession.class, tokenDigest));
+    }
 
-    @Query("delete from UserSession where expiresAt <= :now")
-    long deleteExpired(Instant now);
+    public void deleteByDigest(String tokenDigest) {
+        entityManager.createQuery("delete from UserSession s where s.tokenDigest = :tokenDigest")
+                .setParameter("tokenDigest", tokenDigest)
+                .executeUpdate();
+    }
+
+    /** Deletes the sessions that expired at or before {@code now} and returns how many there were. */
+    public long deleteExpired(Instant now) {
+        return entityManager.createQuery("delete from UserSession s where s.expiresAt <= :now")
+                .setParameter("now", now)
+                .executeUpdate();
+    }
 }

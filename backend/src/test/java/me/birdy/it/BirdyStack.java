@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
@@ -95,6 +96,16 @@ public final class BirdyStack {
     /** A direct connection to the MySQL database of the stack, to inspect or prepare rows. */
     public Connection jdbc() throws SQLException {
         return DriverManager.getConnection(mysql.getJdbcUrl(), DB_USER, dbPassword);
+    }
+
+    /** The distinct exception lines of the application server log, to explain unexpected answers. */
+    public String serverExceptions() {
+        return app.getLogs().lines()
+                .filter(line -> line.contains("Exception") && !line.startsWith("\tat "))
+                .map(String::strip)
+                .distinct()
+                .limit(20)
+                .collect(Collectors.joining("\n"));
     }
 
     public void pauseMongo() {
