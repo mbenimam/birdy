@@ -1,0 +1,192 @@
+@use "sass:color";
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.nav {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: $nav-width;
+  background-color: var(--color-surface);
+
+  &--left {
+    @include between($breakpoint-small, $breakpoint-wide) {
+      width: $nav-width-collapsed;
+
+      .nav__element {
+        padding: 5px;
+      }
+
+      .nav__element-label {
+        @include visually-hidden;
+      }
+    }
+
+    // Small screens: the navigation is a drawer sliding over the page.
+    @include below($breakpoint-small) {
+      position: fixed;
+      top: 0;
+      left: -$nav-width;
+      z-index: 100;
+      height: 100vh;
+      height: 100dvh;
+      visibility: hidden;
+      transition:
+        left 0.2s ease-in-out,
+        visibility 0.2s;
+
+      &.nav--open {
+        left: 0;
+        visibility: visible;
+      }
+    }
+  }
+
+  &--right {
+    @include below($breakpoint-medium) {
+      width: 8.4rem;
+
+      .nav__element {
+        padding: 1rem;
+      }
+
+      .nav__element-label {
+        @include visually-hidden;
+      }
+    }
+
+    @include below($breakpoint-small) {
+      display: none;
+    }
+  }
+
+  &__backdrop {
+    display: none;
+
+    @include below($breakpoint-small) {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      display: block;
+      border: none;
+      background-color: var(--color-overlay);
+    }
+  }
+
+  &__desc {
+    padding: 1rem 2rem 0;
+    color: var(--color-text-muted);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+
+    @include below($breakpoint-medium) {
+      @include visually-hidden;
+    }
+  }
+
+  &__elements {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden auto;
+  }
+
+  &__element {
+    display: flex;
+    align-items: center;
+    height: 7.4rem;
+    padding: 5px 10px;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: var(--color-surface-raised);
+    }
+
+    &:hover > .nav__element-icon {
+      color: #ffc107;
+    }
+
+    &:focus-visible {
+      outline-offset: -3px;
+    }
+
+    &--active > .nav__element-icon {
+      color: $color-primary-dark;
+    }
+  }
+
+  &__element-icon {
+    position: relative;
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 5.4rem;
+    height: 5.4rem;
+    color: var(--color-text-muted);
+  }
+
+  &__element-label {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    min-width: 0;
+    padding: 10px 20px;
+    color: var(--color-text);
+    font-size: 2rem;
+    text-align: left;
+
+    &--strong {
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    &--white {
+      color: $color-white;
+      font-weight: 700;
+    }
+  }
+
+  &__status {
+    position: absolute;
+    right: -0.3rem;
+    bottom: -0.3rem;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid var(--color-surface);
+    border-radius: 50%;
+
+    &--online {
+      background-color: $color-online;
+    }
+  }
+
+  &__empty {
+    padding: 2rem;
+    color: var(--color-text-muted);
+    font-size: 1.6rem;
+    text-align: center;
+
+    @include below($breakpoint-medium) {
+      @include visually-hidden;
+    }
+  }
+
+  &__button {
+    background-image: linear-gradient(to right, #9c27b0, color.adjust(#e1bee7, $lightness: -30%, $space: hsl));
+
+    &:hover {
+      background-color: transparent;
+      filter: brightness(1.1);
+    }
+
+    > .nav__element-icon,
+    &:hover > .nav__element-icon {
+      color: $color-white;
+    }
+  }
+}

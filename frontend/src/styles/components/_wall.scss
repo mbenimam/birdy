@@ -1,0 +1,73 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+// Profile banner.
+.wall {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+
+  &__img {
+    height: 200px;
+    background-image: linear-gradient(to bottom right, #68b7f9, #aff7c9);
+
+    @include below($breakpoint-small) {
+      height: 120px;
+    }
+  }
+
+  &__profile {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 2rem;
+  }
+
+  &__profile-picture {
+    border: 5px solid var(--color-surface);
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    line-height: 0;
+  }
+
+  &__name {
+    padding: 1rem 2rem 0;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: capitalize;
+  }
+
+  &__handle {
+    padding: 0 2rem;
+    color: $color-accent-link;
+    font-style: italic;
+  }
+
+  &__links {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  &__links-link {
+    display: flex;
+    flex: 1;
+    // The count (dd) is displayed above its label (dt).
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    min-height: 5rem;
+    color: var(--color-text-muted);
+    font-size: 1.8rem;
+  }
+
+  &__links-count {
+    color: var(--color-text);
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+}

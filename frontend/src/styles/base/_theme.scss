@@ -1,0 +1,45 @@
+@use "../abstracts/variables" as *;
+
+@mixin dark-theme {
+  --color-bg: #{$dark-bg};
+  --color-surface: #{$dark-surface};
+  --color-surface-raised: #{$dark-surface-raised};
+  --color-surface-hover: #{$dark-surface-hover};
+  --color-text: #{$dark-text};
+  --color-text-muted: #{$dark-text-muted};
+  --color-header: #{$dark-surface};
+  --color-overlay: #{rgba($dark-bg, 0.9)};
+  --shadow: 0 0.2rem 0.5rem #{rgba($color-black, 0.2)};
+
+  color-scheme: dark;
+}
+
+@mixin light-theme {
+  --color-bg: #{$light-bg};
+  --color-surface: #{$light-surface};
+  --color-surface-raised: #{$light-surface-raised};
+  --color-surface-hover: #{$light-surface-hover};
+  --color-text: #{$light-text};
+  --color-text-muted: #{$light-text-muted};
+  --color-header: #{$color-secondary-dark};
+  --color-overlay: #{rgba($color-secondary-dark, 0.85)};
+  --shadow: 0 0.2rem 0.5rem #{rgba($color-black, 0.12)};
+
+  color-scheme: light;
+}
+
+// Dark is the original look; the system preference picks the default and an
+// explicit data-theme attribute (set by the toggle) wins over it.
+:root {
+  @include dark-theme;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    @include light-theme;
+  }
+}
+
+:root[data-theme="light"] {
+  @include light-theme;
+}

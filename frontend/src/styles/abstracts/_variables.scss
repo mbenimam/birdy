@@ -1,0 +1,70 @@
+// Brand palette, carried over from the original Birdy design.
+$color-primary-light: #ffb900;
+$color-primary-dark: #ff7730;
+
+$color-secondary-dark: #404158;
+
+$color-tertiary-light: #2998ff;
+
+$color-accent-like: #e91e63;
+$color-accent-comment: #8bc34a;
+$color-accent-link: #03a9f4;
+$color-online: #2e9d48;
+$color-danger: #ff6b6b;
+
+$color-white: #fff;
+$color-black: #000;
+
+// Surfaces of the two themes (exposed as custom properties in base/_theme).
+$dark-bg: #201a1a;
+$dark-surface: #242526;
+$dark-surface-raised: #3a3b3c;
+$dark-surface-hover: #3e4042;
+$dark-text: #fff;
+$dark-text-muted: #a4a7ab;
+
+$light-bg: #f4f4f4;
+$light-surface: #fff;
+$light-surface-raised: #e9eaed;
+$light-surface-hover: #ddd;
+$light-text: #1c1e21;
+$light-text-muted: #5f6368;
+
+// Typography: the root font size is 50%, so 1rem is 8px at browser defaults.
+$default-font-size: 1.6rem;
+$content-font-size: 2rem;
+
+// Layout
+$header-height: 64px;
+$nav-width: 320px;
+$nav-width-collapsed: 64px;
+$content-width: 800px;
+
+$breakpoint-wide: 1600px;
+$breakpoint-medium: 1300px;
+$breakpoint-small: 1000px;
+
+// Chat bubble gradients offered by the colour picker (index 1..18).
+$chat-gradients: (
+  linear-gradient(170deg, #ff6cab, #7366ff),
+  linear-gradient(170deg, #b65eba, #2e8de1),
+  linear-gradient(170deg, #64e8de, #8a64eb),
+  linear-gradient(170deg, #7bf2e9, #b65eba),
+  linear-gradient(170deg, #ff9482, #7d77ff),
+  linear-gradient(170deg, #ffcf18, #ff8818),
+  linear-gradient(170deg, #ffa62e, #ea4d2c),
+  linear-gradient(170deg, #00ffed, #00b8ba),
+  linear-gradient(170deg, #6ee2f5, #6454f0),
+  linear-gradient(170deg, #3499ff, #3a3985),
+  linear-gradient(170deg, #ff9897, #f650a0),
+  linear-gradient(170deg, #ffcda5, #ee4d5f),
+  linear-gradient(170deg, #ff5b94, #8441a4),
+  linear-gradient(170deg, #f869d5, #5650de),
+  linear-gradient(170deg, #f00b51, #7366ff),
+  linear-gradient(170deg, #6454f0 0%, #7d77ff 10%, #2e8de1 20%, #3499ff 30%, #99d65a 40%, #ffcf18 50%, #ffa62e 60%, #ff8818 70%, #ea4d2c 80%, #f00b51 100%),
+  linear-gradient(to bottom, #16c9f2, #d72063),
+  linear-gradient(to bottom, #085ecd, #0869d1, #ff6e01, #fe1312)
+);
+
+// Number of avatar background hues (class avatar--hue-0 .. avatar--hue-11).
+$avatar-hues: 12;

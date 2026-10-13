@@ -1,0 +1,83 @@
+@use "sass:color";
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.btn-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-surface-raised);
+  }
+
+  &--large {
+    width: 50px;
+    height: 50px;
+  }
+
+  &--small {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.btn {
+  position: relative;
+  display: inline-block;
+  padding: 1.5rem 4rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: $default-font-size;
+  text-transform: uppercase;
+  transition: all 0.3s ease-in-out;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-0.3rem);
+    box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+
+  &--white {
+    background-color: $color-white;
+    color: color.adjust($color-primary-dark, $lightness: -18%, $space: hsl);
+
+    @include focus-ring($color-secondary-dark);
+  }
+
+  &--animated {
+    animation: move-in-bottom 0.5s ease-in-out 0.2s backwards;
+  }
+}
+
+.btn-text {
+  display: inline-block;
+  padding: 3px;
+  border: none;
+  border-bottom: 1px solid $color-primary-dark;
+  background: none;
+  color: $color-primary-dark;
+  font-size: $default-font-size;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-dark;
+    color: $color-black;
+    box-shadow: 0 1rem 2rem rgba($color-black, 0.15);
+    transform: translateY(-2px);
+  }
+}

@@ -1,0 +1,32 @@
+// Full-screen overlay used by the composer and the colour picker.
+.fullsc-container {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: var(--color-overlay);
+}
+
+.fullsc {
+  width: 100%;
+
+  &--addpost {
+    max-width: 500px;
+    height: min(500px, 90vh);
+    padding: 0;
+    font-size: 2rem;
+  }
+
+  &--color-picker {
+    max-width: 800px;
+  }
+
+  &-close {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}

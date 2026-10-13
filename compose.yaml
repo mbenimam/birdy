@@ -1,0 +1,64 @@
+name: birdy
+
+services:
+  mysql:
+    image: mysql:8.4.11
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-birdy}
+      MYSQL_USER: ${MYSQL_USER:-birdy}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?copy .env.example to .env first}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?copy .env.example to .env first}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:8.0.32
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-birdy}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?copy .env.example to .env first}
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.adminCommand('ping').ok\" | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    environment:
+      BIRDY_DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-birdy}
+      BIRDY_DB_USER: ${MYSQL_USER:-birdy}
+      BIRDY_DB_PASSWORD: ${MYSQL_PASSWORD}
+      BIRDY_MONGO_URI: mongodb://${MONGO_USER:-birdy}:${MONGO_PASSWORD}@mongo:27017/?authSource=admin
+      BIRDY_MONGO_DB: ${MONGO_DATABASE:-birdy}
+      BIRDY_SESSION_TTL_HOURS: ${BIRDY_SESSION_TTL_HOURS:-168}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${BIRDY_PORT:-8080}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+  mongo-data:

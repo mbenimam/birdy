@@ -1,0 +1,61 @@
+@use "../abstracts/mixins" as *;
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-hover) var(--color-surface);
+}
+
+html {
+  font-size: 50%;
+}
+
+body {
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  @include focus-ring;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  @include focus-ring;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.sr-only {
+  @include visually-hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::after,
+  *::before {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

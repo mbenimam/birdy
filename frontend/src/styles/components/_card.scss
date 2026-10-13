@@ -1,0 +1,154 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+
+  @include below($breakpoint-small) {
+    padding: 0 0 10px;
+  }
+
+  &--post {
+    padding: 0;
+  }
+
+  &--timeline {
+    flex: 1;
+    gap: 2rem;
+    justify-content: flex-start;
+  }
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow);
+  color: var(--color-text);
+
+  &__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__title-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+    border-radius: 50%;
+    color: $color-white;
+
+    &--green {
+      background-color: $color-accent-comment;
+    }
+
+    &--blue {
+      background-color: $color-accent-link;
+    }
+  }
+
+  &--post {
+    padding: 1rem 1rem 0;
+    box-shadow: none;
+  }
+
+  &--color-picker {
+    display: flex;
+    flex: 1;
+    max-width: 800px;
+    height: 450px;
+    background-color: var(--color-surface-raised);
+  }
+
+  &--addpost {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+}
+
+// "About" card of the profile page.
+.bio {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  font-size: 1.8rem;
+
+  &__element {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  &__element-icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+
+    &--joined {
+      color: $color-accent-link;
+    }
+
+    &--email {
+      color: #ff9800;
+    }
+
+    &--birthday {
+      color: #b968d9;
+    }
+  }
+
+  &__element-text {
+    flex: 1;
+    min-width: 0;
+    padding-left: 1rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+// Grid of followed accounts on the profile page.
+.pelicule {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  &__friend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: var(--color-surface-raised);
+    font-size: 1.5rem;
+    transition: background-color 0.1s ease-in-out;
+
+    &:hover {
+      background-color: var(--color-surface-hover);
+    }
+  }
+
+  &__friend-name {
+    max-width: 100%;
+    padding: 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

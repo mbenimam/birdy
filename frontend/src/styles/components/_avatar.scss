@@ -1,0 +1,44 @@
+@use "sass:math";
+@use "../abstracts/variables" as *;
+
+// Generated initials on a coloured disc; the hue class is derived from the username.
+.avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: $color-white;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  user-select: none;
+
+  &--small {
+    width: 32px;
+    height: 32px;
+    font-size: 1.4rem;
+  }
+
+  &--large {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 4rem;
+    font-size: 4rem;
+  }
+
+  &--profile {
+    width: 128px;
+    height: 128px;
+    font-size: 6rem;
+  }
+
+  @for $i from 0 to $avatar-hues {
+    &--hue-#{$i} {
+      background-color: hsl(math.div(360 * $i, $avatar-hues) 55% 42%);
+    }
+  }
+}

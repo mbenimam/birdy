@@ -1,0 +1,101 @@
+@use "sass:color";
+@use "../abstracts/variables" as *;
+
+.users {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+
+  &-search {
+    max-width: 60rem;
+    margin-bottom: 2rem;
+
+    .field {
+      background-color: var(--color-surface);
+      box-shadow: var(--shadow);
+    }
+
+    .field__input {
+      color: var(--color-text);
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
+    }
+
+    .field__label {
+      color: $color-primary-dark;
+    }
+  }
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(35rem, 100%), 1fr));
+    gap: 1rem;
+  }
+}
+
+.user-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  height: 12rem;
+  padding: 1rem;
+  border-radius: 3px;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow);
+  transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-surface-raised);
+  }
+
+  &__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    color: var(--color-text-muted);
+    font-size: 2rem;
+  }
+
+  &__name {
+    overflow: hidden;
+    color: var(--color-text);
+    font-weight: 700;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.user-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 11rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: $color-primary-dark;
+  color: $color-black;
+  font-size: 1.6rem;
+  font-weight: 700;
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust($color-primary-dark, $lightness: 5%, $space: hsl);
+  }
+
+  &--remove {
+    background-color: var(--color-surface-hover);
+    color: var(--color-text);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-surface-raised);
+    }
+  }
+}

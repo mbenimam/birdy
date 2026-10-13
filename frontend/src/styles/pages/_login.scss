@@ -1,0 +1,213 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+$login-breakpoint: 1050px;
+
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  color: $color-white;
+
+  &__content {
+    display: flex;
+    flex: 1;
+    width: 100%;
+
+    @include below($login-breakpoint) {
+      flex-direction: column;
+    }
+  }
+
+  &__content-panel {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    overflow: hidden;
+
+    &--1 {
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      background-color: $color-secondary-dark;
+      background-image: url("../../assets/login-animation.svg");
+      background-position: -50px -100px;
+      background-repeat: no-repeat;
+
+      @include below($login-breakpoint) {
+        order: 2;
+      }
+    }
+
+    &--2 {
+      @include brand-gradient;
+
+      align-items: center;
+      min-width: 35rem;
+
+      @include from($login-breakpoint) {
+        flex: 1;
+      }
+
+      @include below($login-breakpoint) {
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+    }
+  }
+
+  &__content-panel-card {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    max-width: 60rem;
+
+    &--1 {
+      flex-direction: column;
+      max-width: 80%;
+      padding-top: 8rem;
+
+      @include below($login-breakpoint) {
+        max-width: 100%;
+        padding-right: 1rem;
+        padding-left: 1rem;
+      }
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    padding: 1rem;
+    background-color: $color-secondary-dark;
+    color: #c5c7d3;
+    font-size: 1.7rem;
+    text-align: center;
+  }
+}
+
+.logobox {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: $color-white;
+  font-size: 2rem;
+  font-weight: 700;
+
+  &__icon {
+    color: $color-primary-light;
+  }
+}
+
+.presentation {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 70rem;
+  text-align: center;
+
+  &__title {
+    position: relative;
+    margin-bottom: 2rem;
+    font-size: 6rem;
+
+    &::after {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 15%;
+      border-bottom: 8px solid;
+      content: "";
+      transform: translateX(-50%);
+    }
+  }
+
+  &__description {
+    margin-bottom: 2rem;
+    padding: 2rem 3rem;
+    border-left: 5px solid;
+    line-height: 2.4rem;
+    text-align: left;
+  }
+
+  &__features {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-around;
+
+    @include below($login-breakpoint) {
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+    }
+  }
+
+  &__feature-box {
+    flex: 1;
+    padding: 2rem 1rem;
+    border-radius: 3px;
+    background-color: rgba($color-white, 0.1);
+    box-shadow: 0 1.5rem 4rem rgba($color-black, 0.15);
+    font-size: 1.5rem;
+    transition: all 0.2s;
+
+    &:hover {
+      box-shadow: 0 2rem 4.5rem rgba($color-black, 0.3);
+      transform: translateY(-1.5rem) scale(1.03);
+    }
+  }
+
+  &__feature-icon {
+    color: $color-primary-light;
+  }
+}
+
+.login-form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 30rem;
+  max-width: 80rem;
+  color: $color-black;
+  text-align: center;
+
+  &__title {
+    margin-bottom: 2rem;
+    font-size: 4rem;
+    font-weight: 400;
+  }
+
+  &__error {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 3px;
+    background-color: rgba($color-white, 0.9);
+    color: #b00020;
+    font-weight: 700;
+  }
+
+  &__button {
+    height: 6.4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  &__links {
+    font-size: 1.8rem;
+
+    a {
+      font-weight: 700;
+      text-decoration: underline;
+
+      @include focus-ring($color-secondary-dark);
+    }
+  }
+}
