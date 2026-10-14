@@ -95,6 +95,18 @@
     overflow: hidden auto;
   }
 
+  &__section {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    max-height: 50%;
+    border-bottom: 1px solid var(--color-surface-raised);
+  }
+
+  &__elements--online {
+    flex: 0 1 auto;
+  }
+
   &__element {
     display: flex;
     align-items: center;
@@ -149,6 +161,12 @@
       color: $color-white;
       font-weight: 700;
     }
+  }
+
+  &__element-note {
+    color: var(--color-text-muted);
+    font-weight: 400;
+    text-transform: none;
   }
 
   &__status {

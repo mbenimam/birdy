@@ -47,7 +47,7 @@ export function LoginForm() {
         required
         error={state.fields.password}
       />
-      <button type="submit" className="login-form__button btn btn--white btn--animated" disabled={pending}>
+      <button type="submit" className="login-form__button btn btn--white" disabled={pending}>
         {pending ? 'Logging in…' : 'Log in'}
       </button>
       <p className="login-form__links">

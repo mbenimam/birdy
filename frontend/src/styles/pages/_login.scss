@@ -120,10 +120,11 @@ $login-breakpoint: 1050px;
 
     &::after {
       position: absolute;
-      bottom: 0;
+      bottom: -0.6rem;
       left: 50%;
-      width: 15%;
-      border-bottom: 8px solid;
+      width: 40%;
+      border-bottom: 6px solid;
+      border-radius: 3px;
       content: "";
       transform: translateX(-50%);
     }
@@ -178,6 +179,11 @@ $login-breakpoint: 1050px;
   max-width: 80rem;
   color: $color-black;
   text-align: center;
+
+  // Fixed-height fields must not shrink, or each one slides under the next.
+  > * {
+    flex-shrink: 0;
+  }
 
   &__title {
     margin-bottom: 2rem;

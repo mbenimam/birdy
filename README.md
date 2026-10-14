@@ -4,7 +4,7 @@
 ![Java 25](https://img.shields.io/badge/Java-25-437291)
 ![Jakarta EE 11](https://img.shields.io/badge/Jakarta%20EE-11-f89820)
 ![React 19](https://img.shields.io/badge/React-19-58c4dc)
-![tests](https://img.shields.io/badge/tests-277%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-279%20passing-2ea44f)
 [![license MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A small social network, full stack, that starts with one command. You sign up, follow people, post, like, comment
@@ -15,7 +15,7 @@ and talk in a live chat room.
 | **What it is** | A React single-page app, a Jakarta EE REST and WebSocket API, MySQL and MongoDB |
 | **Who it is for** | Anyone who wants to read a complete web application small enough to hold in one head |
 | **Stack** | React 19, TypeScript, Vite · Java 25, Jakarta EE 11 on Payara 7 · MySQL 8.4, MongoDB 8 · nginx · Docker Compose |
-| **Proof** | 277 automated tests: 142 unit and 48 integration tests on the back end, 87 on the front end. The integration tests run against real MySQL, MongoDB and the real server image |
+| **Proof** | 279 automated tests: 142 unit and 48 integration tests on the back end, 89 on the front end. The integration tests run against real MySQL, MongoDB and the real server image |
 
 ![The timeline, with likes and a comment thread open](docs/assets/screenshots/timeline.png)
 

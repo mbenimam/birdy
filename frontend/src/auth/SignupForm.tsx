@@ -76,7 +76,7 @@ export function SignupForm() {
         defaultValue={state.values.birthday}
         error={state.fields.birthday}
       />
-      <button type="submit" className="login-form__button btn btn--white btn--animated" disabled={pending}>
+      <button type="submit" className="login-form__button btn btn--white" disabled={pending}>
         {pending ? 'Creating your account…' : 'Sign up'}
       </button>
       <p className="login-form__links">

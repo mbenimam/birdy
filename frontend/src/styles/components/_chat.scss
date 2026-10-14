@@ -16,14 +16,24 @@
     padding: 1rem;
     border-bottom: 1px solid var(--color-surface-raised);
     font-size: 1.6rem;
+
+    // The side panel shows who is online on wide screens; the strip is for phones only.
+    @include from($breakpoint-small) {
+      display: none;
+    }
   }
 
   &__status {
     flex: none;
+    padding: 0.6rem 1rem;
+    background-color: var(--color-surface-raised);
     color: var(--color-text-muted);
+    font-size: 1.5rem;
+    text-align: center;
 
+    // Only a lost or pending connection is worth a banner.
     &--open {
-      color: $color-online;
+      @include visually-hidden;
     }
   }
 
@@ -198,6 +208,10 @@
 
 .chat-page {
   height: 100%;
-  max-width: 940px;
-  margin: 0 auto;
+}
+
+// The chat takes the whole main column, edge to edge.
+.app__main:has(> .chat-page) {
+  padding: 0;
+  overflow: hidden;
 }

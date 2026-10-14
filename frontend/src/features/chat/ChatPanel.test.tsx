@@ -49,16 +49,55 @@ describe('chat panel', () => {
     expect(within(log).getByText('A live one')).toBeInTheDocument();
   });
 
-  it('lists who is online', async () => {
-    const { socket } = await openChat();
+  it('lists who is online in the side panel, and in the strip shown on phones', async () => {
+    const { socket, unmount } = await openChat();
+    const panel = screen.getByRole('complementary', { name: 'Following' });
+    expect(within(panel).queryByRole('list', { name: 'Online now' })).not.toBeInTheDocument();
 
     act(() => {
       socket.accept();
       socket.push({ type: 'presence', room: 'lobby', users: ['alice', 'bob'] });
     });
 
-    const online = screen.getByRole('list', { name: 'Online now' });
-    expect(within(online).getAllByRole('listitem').map((item) => item.textContent)).toEqual(['ALalice', 'BObob']);
+    const sideList = within(panel).getByRole('list', { name: 'Online now' });
+    expect(within(sideList).getAllByRole('listitem').map((item) => item.textContent)).toEqual([
+      'ALalice\u00a0(you)',
+      'BObob',
+    ]);
+    expect(within(sideList).getByRole('link', { name: /bob/ })).toHaveAttribute('href', '/u/bob');
+
+    const strip = within(screen.getByRole('region', { name: 'Chat room lobby' })).getByRole('list', {
+      name: 'Online now',
+    });
+    expect(within(strip).getAllByRole('listitem').map((item) => item.textContent)).toEqual(['ALalice', 'BObob']);
+    unmount();
+  });
+
+  it('removes the online list from the side panel when the chat is left', async () => {
+    const { socket, user } = await openChat();
+    act(() => {
+      socket.accept();
+      socket.push({ type: 'presence', room: 'lobby', users: ['alice', 'bob'] });
+    });
+    const panel = screen.getByRole('complementary', { name: 'Following' });
+    expect(within(panel).getByRole('list', { name: 'Online now' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('link', { name: 'Timeline' }));
+
+    await waitFor(() => {
+      expect(within(panel).queryByRole('list', { name: 'Online now' })).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows a connection banner only while the socket is not open', async () => {
+    const { socket } = await openChat();
+    expect(screen.getByRole('status')).not.toHaveClass('chat__status--open');
+
+    act(() => {
+      socket.accept();
+    });
+
+    expect(screen.getByRole('status')).toHaveClass('chat__status--open');
   });
 
   it('sends the message with Enter once connected, and clears the box', async () => {
