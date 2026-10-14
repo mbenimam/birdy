@@ -4,18 +4,21 @@
 ![Java 25](https://img.shields.io/badge/Java-25-437291)
 ![Jakarta EE 11](https://img.shields.io/badge/Jakarta%20EE-11-f89820)
 ![React 19](https://img.shields.io/badge/React-19-58c4dc)
-![tests](https://img.shields.io/badge/tests-279%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-281%20passing-2ea44f)
 [![license MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 A small social network, full stack, that starts with one command. You sign up, follow people, post, like, comment
 and talk in a live chat room.
+
+**Try it live at <https://birdy.shmod.me>.** Log in as `ada`, `linus`, `grace` or `alan` with the password
+`birdy-demo-2026`, or sign up. Open the chat in two windows to watch the WebSocket at work.
 
 | | |
 |---|---|
 | **What it is** | A React single-page app, a Jakarta EE REST and WebSocket API, MySQL and MongoDB |
 | **Who it is for** | Anyone who wants to read a complete web application small enough to hold in one head |
 | **Stack** | React 19, TypeScript, Vite · Java 25, Jakarta EE 11 on Payara 7 · MySQL 8.4, MongoDB 8 · nginx · Docker Compose |
-| **Proof** | 279 automated tests: 142 unit and 48 integration tests on the back end, 89 on the front end. The integration tests run against real MySQL, MongoDB and the real server image |
+| **Proof** | 281 automated tests: 144 unit and 48 integration tests on the back end, 89 on the front end. The integration tests run against real MySQL, MongoDB and the real server image |
 
 ![The timeline, with likes and a comment thread open](docs/assets/screenshots/timeline.png)
 
@@ -154,7 +157,7 @@ setting and a toggle switches between dark and light.
 ## Checks
 
 ```bash
-cd backend && ./mvnw verify     # 142 unit tests, then 48 integration tests in containers
+cd backend && ./mvnw verify     # 144 unit tests, then 48 integration tests in containers
 cd frontend && npm ci && npm run lint && npm run typecheck && npm test && npm run build
 scripts/smoke.sh                # against a running stack, through nginx
 ```
@@ -190,13 +193,14 @@ back end on that port in a `compose.override.yaml` while you work on the interfa
 | `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD` | MySQL database and accounts |
 | `MONGO_DATABASE`, `MONGO_USER`, `MONGO_PASSWORD` | MongoDB database and account |
 | `BIRDY_SESSION_TTL_HOURS` | How long a login lasts, default 168 |
+| `MONGO_IMAGE` | Optional. MongoDB 8 refuses to start on Ubuntu 26.04's kernel; set `mongo:7.0.45` there (the tests pass on both) |
 
 ## Layout
 
 ```text
 compose.yaml        the four services
 .env.example        the settings Compose reads
-backend/            Jakarta EE 11 API: pom.xml, Maven wrapper, Dockerfile, db/schema.sql
+backend/            Jakarta EE 11 API: pom.xml, Maven wrapper, Dockerfile, db/schema.sql (applied at startup)
 frontend/           React 19 app: Vite, TypeScript, Dockerfile, nginx.conf
 scripts/            smoke test and demo data
 docs/               API contract, diagrams, screenshots
