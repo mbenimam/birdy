@@ -24,7 +24,8 @@ import org.testcontainers.utility.MountableFile;
 public final class BirdyStack {
 
     public static final String MYSQL_IMAGE = "mysql:8.4.11";
-    public static final String MONGO_IMAGE = "mongo:8.0.32";
+    /** Overridable with MONGO_IMAGE, the same variable compose.yaml reads, to test against MongoDB 7.0. */
+    public static final String MONGO_IMAGE = System.getenv().getOrDefault("MONGO_IMAGE", "mongo:8.0.32");
 
     /** Short enough for the tests to observe the background purge of expired sessions. */
     public static final int SESSION_CLEANUP_SECONDS = 2;

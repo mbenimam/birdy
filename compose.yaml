@@ -20,7 +20,8 @@ services:
     restart: unless-stopped
 
   mongo:
-    image: mongo:8.0.32
+    # MongoDB 8.x refuses to start on Ubuntu 26.04's 7.0.0 kernel (SERVER-136848); set MONGO_IMAGE=mongo:7.0.45 there.
+    image: ${MONGO_IMAGE:-mongo:8.0.32}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-birdy}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?copy .env.example to .env first}
