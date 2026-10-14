@@ -2,7 +2,7 @@ name: birdy
 
 services:
   mysql:
-    build: ./backend/db   # mysql:8.4.11 with db/schema.sql as its init script
+    image: mysql:8.4.11   # empty database; the back end creates its tables at startup
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-birdy}
       MYSQL_USER: ${MYSQL_USER:-birdy}

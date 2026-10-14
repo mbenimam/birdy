@@ -9,7 +9,7 @@
     <!-- No second-level cache: the database is the only truth for sessions (expiry, logout, cascading deletes). -->
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
-      <!-- The schema is owned by db/schema.sql; the provider never creates or alters tables. -->
+      <!-- The schema is owned by db/schema.sql, applied by SchemaInitializer; the provider never creates or alters tables. -->
       <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
     </properties>
   </persistence-unit>

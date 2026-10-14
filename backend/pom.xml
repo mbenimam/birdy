@@ -123,6 +123,19 @@
 
   <build>
     <finalName>birdy</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <!-- The application applies db/schema.sql itself at startup (SchemaInitializer). -->
+      <resource>
+        <directory>db</directory>
+        <targetPath>META-INF/sql</targetPath>
+        <includes>
+          <include>schema.sql</include>
+        </includes>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>

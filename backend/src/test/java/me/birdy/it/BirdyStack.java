@@ -15,11 +15,11 @@ import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.mysql.MySQLContainer;
-import org.testcontainers.utility.MountableFile;
 
 /**
- * The whole system under test, started once for all integration tests: MySQL (initialised with db/schema.sql exactly
- * as in production), MongoDB and the application image built from the project's Dockerfile, on one Docker network.
+ * The whole system under test, started once for all integration tests: an empty MySQL (the application creates its
+ * tables at startup, as in production), MongoDB and the application image built from the project's Dockerfile, on
+ * one Docker network.
  */
 public final class BirdyStack {
 
@@ -51,10 +51,7 @@ public final class BirdyStack {
                 .withNetworkAliases("mysql")
                 .withDatabaseName(DATABASE)
                 .withUsername(DB_USER)
-                .withPassword(dbPassword)
-                .withCopyFileToContainer(
-                        MountableFile.forHostPath(projectDirectory.resolve("db/schema.sql")),
-                        "/docker-entrypoint-initdb.d/schema.sql");
+                .withPassword(dbPassword);
 
         mongo = new GenericContainer<>(MONGO_IMAGE)
                 .withNetwork(network)

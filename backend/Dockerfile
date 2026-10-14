@@ -7,6 +7,7 @@ COPY mvnw pom.xml ./
 COPY .mvn .mvn
 RUN ./mvnw -B -ntp -DskipTests package
 
+COPY db db
 COPY src src
 RUN ./mvnw -B -ntp -DskipTests package
 
