@@ -2,7 +2,7 @@ name: birdy
 
 services:
   mysql:
-    image: mysql:8.4.11
+    build: ./backend/db   # mysql:8.4.11 with db/schema.sql as its init script
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-birdy}
       MYSQL_USER: ${MYSQL_USER:-birdy}
@@ -10,7 +10,6 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?copy .env.example to .env first}
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
       interval: 5s
